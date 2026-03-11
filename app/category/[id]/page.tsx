@@ -23,16 +23,21 @@ type Category = {
 
 const typedCatalogData = catalogData as Category[];
 
-// 导出静态路由参数（Netlify 静态部署必备）
+// 导出静态路由参数
 export function generateStaticParams() {
   return typedCatalogData.map((category) => ({
     id: category.id,
   }));
 }
 
-// 导出页面组件（刚才报错就是因为可能漏了这一大段）
-export default function CategoryPage({ params }: { params: { id: string } }) {
-  const category = typedCatalogData.find((c) => c.id === params.id);
+// 修复：1. 将 params 的类型定义为 Promise
+//      2. 在函数前加上 async
+export default async function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
+  // 修复：3. 使用 await 等待 params 解析
+  const resolvedParams = await params;
+  
+  // 此时 resolvedParams.id 才能正确拿到诸如 'new-energy' 的字符串
+  const category = typedCatalogData.find((c) => c.id === resolvedParams.id);
 
   if (!category) {
     notFound();
