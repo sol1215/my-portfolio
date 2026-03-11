@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import catalogData from "../../../data/catalog.json";
-import BookCard from "../../../components/BookCard";
+import catalogData from "@/data/catalog.json";
+import BookCard from "@/components/BookCard";
 
-// 修复点：在类型定义中补充 price 字段
 type Book = {
   id: string;
   name: string;
@@ -24,14 +23,12 @@ type Category = {
 
 const typedCatalogData = catalogData as Category[];
 
-// 导出静态路由参数
 export function generateStaticParams() {
   return typedCatalogData.map((category) => ({
     id: category.id,
   }));
 }
 
-// 异步组件接收 Promise 类型的 params
 export default async function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const category = typedCatalogData.find((c) => c.id === resolvedParams.id);
@@ -41,36 +38,41 @@ export default async function CategoryPage({ params }: { params: Promise<{ id: s
   }
 
   return (
-    <main className="min-h-screen bg-[#f5f5f7] pb-24 animate-fade-up">
-      <nav className="glass sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="text-[#0071e3] text-sm font-medium hover:opacity-80 transition-opacity flex items-center gap-1">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M15 19l-7-7 7-7" />
+    // 去除固定底色，透出全局噪点和渐变
+    <main className="min-h-screen relative z-10 pb-24 animate-fade-up">
+      {/* iOS 毛玻璃导航栏 */}
+      <nav className="glass-nav sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+        <Link href="/" className="text-brand-dark text-sm font-semibold hover:opacity-70 transition-opacity flex items-center gap-1">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 18l-6-6 6-6" />
           </svg>
-          返回首页
+          返回书目
         </Link>
-        <h1 className="text-lg font-semibold text-gray-900 absolute left-1/2 -translate-x-1/2">
-          {category.name} 书录
+        <h1 className="text-base font-bold text-brand-dark absolute left-1/2 -translate-x-1/2">
+          {category.name}
         </h1>
       </nav>
 
       <header className="max-w-7xl mx-auto px-6 py-12">
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 mb-4">
+        <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-brand-dark mb-3">
           {category.name}
         </h2>
-        <p className="text-gray-500 text-lg max-w-2xl">{category.tagline}</p>
+        <p className="text-brand-dark/60 text-lg max-w-2xl font-medium">{category.tagline}</p>
       </header>
 
       <section className="max-w-7xl mx-auto px-6">
         {category.books && category.books.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
             {category.books.map((book) => (
               <BookCard key={book.id} book={book} />
             ))}
           </div>
         ) : (
-          <div className="py-20 text-center text-gray-400">
-            书录正在整理中，敬请期待...
+          <div className="py-32 flex flex-col items-center justify-center text-brand-dark/40">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mb-4 opacity-50">
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+            </svg>
+            <p>书录正在整理中，敬请期待...</p>
           </div>
         )}
       </section>
