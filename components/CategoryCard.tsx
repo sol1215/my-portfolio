@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 
 interface Category {
@@ -11,9 +10,11 @@ interface Category {
 export default function CategoryCard({ category }: { category: Category }) {
   return (
     <Link href={`/category/${category.id}`} className="block group">
-      <div className="glass rounded-[24px] overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-200/50 cursor-pointer h-full flex flex-col">
-        {/* 封面图 */}
-        <div className="h-56 overflow-hidden bg-gray-100">
+      {/* 替换为 glass-card 类 */}
+      <div className="glass-card rounded-[28px] overflow-hidden cursor-pointer h-full flex flex-col p-2">
+        {/* 封面图内嵌圆角，增加精致感 */}
+        <div className="h-48 overflow-hidden rounded-[20px] bg-white/40">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             src={category.coverImage} 
             alt={category.name}
@@ -21,9 +22,9 @@ export default function CategoryCard({ category }: { category: Category }) {
           />
         </div>
         {/* 内容 */}
-        <div className="p-6 flex-1 flex flex-col justify-center">
-          <h3 className="text-2xl font-semibold mb-2 text-gray-900">{category.name}</h3>
-          <p className="text-gray-500 text-sm leading-relaxed">{category.tagline}</p>
+        <div className="p-5 flex-1 flex flex-col justify-center">
+          <h3 className="text-xl font-bold mb-1 text-brand-dark">{category.name}</h3>
+          <p className="text-brand-dark/60 text-sm leading-relaxed line-clamp-2">{category.tagline}</p>
         </div>
       </div>
     </Link>
