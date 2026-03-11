@@ -3,6 +3,7 @@
 interface Book {
   name: string;
   author: string;
+  price?: string; // 新增定价
   tagline: string;
   coverImage: string;
   purchaseLink: string;
@@ -10,32 +11,38 @@ interface Book {
 
 export default function BookCard({ book }: { book: Book }) {
   return (
-    <div className="glass rounded-[20px] p-5 flex flex-col transition-all duration-300 hover:shadow-xl hover:shadow-gray-100/80 hover:-translate-y-1">
-      {/* 封面与信息 */}
-      <div className="flex gap-5 mb-5">
-        <div className="w-24 h-32 shrink-0 rounded-lg overflow-hidden shadow-md bg-gray-100">
-          <img 
-            src={book.coverImage} 
-            alt={book.name}
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="flex flex-col justify-center">
-          <h4 className="text-lg font-semibold text-gray-900 leading-tight mb-1">{book.name}</h4>
-          <p className="text-xs text-gray-400 font-medium mb-2">{book.author}</p>
-          <p className="text-sm text-gray-600 line-clamp-3 leading-relaxed">{book.tagline}</p>
-        </div>
+    <div className="glass rounded-[24px] p-6 flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 bg-white">
+      {/* 封面图 */}
+      <div className="aspect-[3/4] w-full mb-4 rounded-xl overflow-hidden shadow-inner bg-gray-50">
+        <img 
+          src={book.coverImage} 
+          alt={book.name}
+          className="w-full h-full object-cover"
+        />
       </div>
 
-      {/* 购买按钮 */}
-      <div className="mt-auto pt-2">
-        <button 
-          onClick={() => window.open(book.purchaseLink, '_blank')}
-          className="w-full py-2.5 bg-[#0071e3] text-white hover:bg-[#0077ed] active:scale-[0.98] rounded-xl text-sm font-medium transition-all"
-        >
-          购买链接
-        </button>
+      {/* 核心信息 */}
+      <div className="space-y-2 mb-6">
+        <h4 className="text-xl font-bold text-gray-900 line-clamp-1">{book.name}</h4>
+        <div className="flex justify-between items-center text-sm">
+          <span className="text-gray-500">{book.author}</span>
+          {book.price && <span className="font-bold text-[#ff3b30]">¥{book.price}</span>}
+        </div>
+        <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed italic">
+          “{book.tagline}”
+        </p>
       </div>
+
+      {/* CTA 按钮 */}
+      <button 
+        onClick={() => window.open(book.purchaseLink, '_blank')}
+        className="mt-auto w-full py-3 bg-black text-white hover:bg-gray-800 active:scale-[0.98] rounded-full text-sm font-semibold transition-all flex items-center justify-center gap-2"
+      >
+        <span>在线阅读</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </button>
     </div>
   );
 }
