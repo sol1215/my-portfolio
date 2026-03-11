@@ -3,11 +3,12 @@ import { notFound } from "next/navigation";
 import catalogData from "../../../data/catalog.json";
 import BookCard from "../../../components/BookCard";
 
-// 定义数据格式
+// 修复点：在类型定义中补充 price 字段
 type Book = {
   id: string;
   name: string;
   author: string;
+  price?: string; 
   tagline: string;
   coverImage: string;
   purchaseLink: string;
@@ -30,13 +31,9 @@ export function generateStaticParams() {
   }));
 }
 
-// 修复：1. 将 params 的类型定义为 Promise
-//      2. 在函数前加上 async
+// 异步组件接收 Promise 类型的 params
 export default async function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
-  // 修复：3. 使用 await 等待 params 解析
   const resolvedParams = await params;
-  
-  // 此时 resolvedParams.id 才能正确拿到诸如 'new-energy' 的字符串
   const category = typedCatalogData.find((c) => c.id === resolvedParams.id);
 
   if (!category) {
@@ -66,7 +63,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ id: s
 
       <section className="max-w-7xl mx-auto px-6">
         {category.books && category.books.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
             {category.books.map((book) => (
               <BookCard key={book.id} book={book} />
             ))}
