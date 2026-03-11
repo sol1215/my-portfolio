@@ -1,0 +1,32 @@
+[
+  {
+    "id": "new-energy",
+    "name": "新能源",
+    "tagline": "探索前沿新能源汽车技术与发展趋势。",
+    "coverImage": "/images/ne-cover.jpg",
+    "books": [
+      {
+        "id": "ne-1",
+        "name": "新能源汽车结构与原理",
+        "author": "张三 编著",
+        "tagline": "全面解析新能源汽车核心三电系统与最新架构。",
+        "coverImage": "/images/ne-1.jpg",
+        "purchaseLink": "https://jd.com"
+      }
+    ]
+  },
+  {
+    "id": "traditional-vehicles",
+    "name": "传统车辆",
+    "tagline": "经典内燃机汽车底盘、发动机与传动系统解析。",
+    "coverImage": "/images/tv-cover.jpg",
+    "books": []
+  },
+  {
+    "id": "battery",
+    "name": "蓄电池",
+    "tagline": "汽车铅酸蓄电池与新型储能设备的维护与诊断。",
+    "coverImage": "/images/battery-cover.jpg",
+    "books": []
+  }
+]
